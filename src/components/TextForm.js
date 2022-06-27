@@ -26,7 +26,7 @@ export default function TextForm(props) {
     // }
 
     const handletrim = () =>{
-        console.log("Upper Case Was clicked") 
+         
         let newtext = (text.split(/[ ]+/))
         setText(newtext.join(" "));
         props.showAlert("Remove Extra Spaces" , "success");
@@ -36,13 +36,13 @@ export default function TextForm(props) {
     const handlecopy = () =>{
         // alert("Your Text Copied") 
 
-        let text = document.getElementById("mybox")
-        text.select();
-        navigator.clipboard.writeText(text.value);
+    
+        navigator.clipboard.writeText(text);
+        document.getSelection().removeAllRanges();
         props.showAlert("Copied to Clipboard" , "success");
     }
     const Erase = () =>{
-        console.log("Upper Case Was clicked") 
+       
         let newtext = ("")
         setText(newtext);
         props.showAlert("Erased All Text" , "success");
@@ -51,7 +51,6 @@ export default function TextForm(props) {
 
  
     const handleOnChange = (event) =>{
-        console.log("Upper Case Was clicked")
         setText(event.target.value)
     }
     //  BOLD BUTTON
@@ -60,7 +59,7 @@ export default function TextForm(props) {
     // }
 
     
-    const [text, setText] = useState('Enter Your Text Here');
+    const [text, setText] = useState('');
  
     // if you want to change your text in future then, use setText to change the state 
     // setText("This is my update text") ;
@@ -72,22 +71,22 @@ export default function TextForm(props) {
 
         {/* <label for="mybox" className="form-label">Example textarea</label> */}
         <textarea className="form-control" value= {text} onChange={handleOnChange}  style={{backgroundColor:props.mode==='dark'?'#06353c':'white',  color:props.mode==='dark'?'white':'black'}} id="mybox" rows="12"></textarea>
-        <button className="btn btn-primary my-3" onClick={handleUpClick}> Convert To UpperCase</button>
-        <button className="btn btn-primary my-3 mx-2" onClick={handleLoClick}> Convert To LowerCase</button>
-        <button className="btn btn-primary my-3 mx-2" onClick={Erase}> Erase </button>
-        <button className="btn btn-primary my-3 mx-2" onClick={handlecopy}>  Copy </button>
-        <button className="btn btn-primary my-3 mx-2" onClick={handletrim}> Remove Extra Spaces </button>
+        <button disabled = {text.length===0} className="btn btn-primary my-5" onClick={handleUpClick}> Convert To UpperCase</button>
+        <button disabled = {text.length===0} className="btn btn-primary my-5 mx-2" onClick={handleLoClick}> Convert To LowerCase</button>
+        <button disabled = {text.length===0} className="btn btn-primary my-5 mx-2" onClick={Erase}> Erase </button>
+        <button disabled = {text.length===0} className="btn btn-primary my-5 mx-2" onClick={handlecopy}>  Copy </button>
+        <button disabled = {text.length===0} className="btn btn-primary my-5 mx-2" onClick={handletrim}> Remove Extra Spaces </button>
    
       </div>
       <div className="container"> 
       <h1>Configration of words and letters</h1>
-         {text.split(" ").length} words and {text.length} letters.
+         {text.split(/\s+/).filter((element)=>  {return element.length!==0}).length} words and {text.length} letters.
          {/* <h2>What Time Required For Learn</h2> */}
        <p>
-           {0.008 * text.split("").length } : Minutes Read.
+           {0.008 * text.split("").filter((element)=> {return element.length!==0}).length } : Minutes Read.
            </p>  
             <h2>Preview</h2>
-            <p>{text.length>0?text:"Enter Your Text For Preview Form Above Box"}</p>
+            <p>{text.length>0?text:"Nothing to preview"}</p>
       </div>
       </>
     )
